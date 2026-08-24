@@ -8,6 +8,18 @@ parts that are easy to get subtly and dangerously wrong.
 Works with Claude Code, Cursor, Codex, Copilot, Gemini CLI, OpenCode, Windsurf, Zed, and
 every other agent the `skills` CLI supports.
 
+## Onboard an agent in one shot
+
+Point any coding agent at [`agent-setup.md`](agent-setup.md) and it will install the skills
+and wire up the MCP server itself:
+
+```
+Follow https://github.com/Bynn-Intelligence/skills/blob/main/agent-setup.md
+```
+
+It covers Claude Code, Cursor, VS Code, Windsurf, Zed, Claude Desktop, ChatGPT, and
+headless or CI setups, and tells the agent what to verify before it reports success.
+
 ## Install
 
 Any agent:
@@ -123,6 +135,7 @@ Confirm every result server side before unlocking anything.
 
 ## Documentation
 
+- Agent onboarding: [`agent-setup.md`](agent-setup.md)
 - Bynn: `https://docs.bynn.com`, spec at `https://api.bynn.com/openapi.json`
 - Agemin: `https://agemin.com/docs`
 - Detector24: `https://detector24.ai/docs`
