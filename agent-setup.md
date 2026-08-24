@@ -9,8 +9,9 @@
 > Bynn MCP server into your coding agent in one shot.
 
 These are official instructions from Bynn Intelligence for setting up an AI development
-environment that integrates identity verification, document fraud detection, age
-verification, and content detection. They are published at
+environment that integrates document fraud detection for manipulated, fake and
+AI-generated PDF and image documents, plus identity verification, age verification, and
+content detection. They are published at
 `https://github.com/Bynn-Intelligence/skills/blob/main/agent-setup.md`, so you can verify
 their origin before following them.
 
@@ -29,7 +30,7 @@ Three plugins, fourteen skills, and the hosted Bynn MCP server.
 
 | Plugin | Skills | Covers |
 |---|---|---|
-| `bynn` | `bynn`, `bynn-mcp`, `bynn-kyc-sessions`, `bynn-web-sdk`, `bynn-document-fraud`, `bynn-age-verification`, `bynn-moderation`, `bynn-face-search`, `bynn-autodoc`, `bynn-webhooks` | Identity verification, document forensics, moderation, face search, webhooks |
+| `bynn` | `bynn`, `bynn-mcp`, `bynn-document-fraud`, `bynn-kyc-sessions`, `bynn-web-sdk`, `bynn-age-verification`, `bynn-moderation`, `bynn-face-search`, `bynn-autodoc`, `bynn-webhooks` | Document fraud detection, identity verification, moderation, face search, webhooks |
 | `agemin` | `agemin`, `agemin-web-sdk`, `agemin-api` | Biometric age verification and age gating |
 | `detector24` | `detector24` | Detection models for image, video, audio, and text |
 

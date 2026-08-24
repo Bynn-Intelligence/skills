@@ -1,9 +1,10 @@
 ---
 name: bynn-document-fraud
 description: >-
-  Detect forged, tampered, or AI-generated documents with Bynn: submit an ID,
-  passport, invoice, bank statement, or contract to POST /documents, then read the
-  forensic verdict from GET /documents/{id}. Covers the async submit-and-poll
+  Document fraud detection with Bynn: detect manipulated, fake, edited and
+  AI-generated PDF and image documents. Submit an ID, passport, invoice, bank
+  statement, or contract to POST /documents, then read the forensic verdict from
+  GET /documents/{id}. Covers the async submit-and-poll
   contract, risk score fields, the status versus analysis_status distinction,
   file limits, and metadata that improves the analysis. Use when asked whether a
   document is genuine, altered, or machine-generated.

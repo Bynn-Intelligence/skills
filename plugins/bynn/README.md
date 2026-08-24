@@ -1,8 +1,10 @@
 # Bynn
 
-Skills for integrating the [Bynn](https://www.bynn.com) identity platform: KYC sessions,
-document fraud detection, age verification, content moderation, face search, AutoDoc
-invitations, and webhook verification. Bundles the Bynn MCP server.
+Skills for integrating [Bynn](https://www.bynn.com). **Document fraud detection** is the
+core: check and verify manipulated, fake, edited or AI-generated PDF and image documents in
+real time, with forensic analysis that surfaces alterations invisible to the human eye.
+Also covers identity verification and KYC sessions, age verification, content moderation,
+face search, AutoDoc invitations, and webhook verification. Bundles the Bynn MCP server.
 
 ## Install
 
@@ -36,9 +38,9 @@ For headless use, pass a token from `https://dashboard.bynn.com/authenticate` as
 |---|---|
 | `bynn` | Router. Auth model, key families, test versus live mode, errors. Start here. |
 | `bynn-mcp` | Connecting an agent to the MCP server and driving Bynn through tools. |
-| `bynn-kyc-sessions` | Hosted identity verification, liveness, NFC chip reads, preflight. |
-| `bynn-web-sdk` | Embedding verification in a website with `@bynn-intelligence/websdk`. |
 | `bynn-document-fraud` | Forgery, tampering, and AI-generation analysis of documents. |
+| `bynn-kyc-sessions` | Identity verification sessions: liveness, NFC chip reads, preflight. |
+| `bynn-web-sdk` | Embedding verification in a website with `@bynn-intelligence/websdk`. |
 | `bynn-age-verification` | Age estimation and minor detection, selfie and liveness. |
 | `bynn-moderation` | Detection models across image, video, text, and audio. |
 | `bynn-face-search` | Face collections, enrollment, and 1:N search. |

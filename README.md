@@ -1,9 +1,10 @@
 # Bynn Agent Skills
 
 Official [Agent Skills](https://agentskills.io) for **Bynn**, **Agemin**, and
-**Detector24**. They teach any coding agent how to integrate identity verification,
-document fraud detection, age verification, and content detection correctly, including the
-parts that are easy to get subtly and dangerously wrong.
+**Detector24**. They teach any coding agent how to integrate **document fraud detection** for
+manipulated, fake and AI-generated PDF and image documents, plus identity verification,
+age verification, and content detection, including the parts that are easy to get subtly
+and dangerously wrong.
 
 Works with Claude Code, Cursor, Codex, Copilot, Gemini CLI, OpenCode, Windsurf, Zed, and
 every other agent the `skills` CLI supports.
@@ -65,9 +66,9 @@ The identity platform. Start with the `bynn` skill: it routes to the rest.
 |---|---|
 | `bynn` | Router. Auth model, API base, errors, conventions. |
 | `bynn-mcp` | Connecting an agent to `mcp.bynn.com` and driving Bynn through tools. |
-| `bynn-kyc-sessions` | Hosted identity verification, liveness, NFC chip reads, preflight. |
-| `bynn-web-sdk` | Embedding verification in a website with `@bynn-intelligence/websdk`. |
 | `bynn-document-fraud` | Forgery, tampering, and AI-generation analysis of documents. |
+| `bynn-kyc-sessions` | Identity verification sessions: liveness, NFC chip reads, preflight. |
+| `bynn-web-sdk` | Embedding verification in a website with `@bynn-intelligence/websdk`. |
 | `bynn-age-verification` | Age estimation and minor detection, selfie and liveness. |
 | `bynn-moderation` | Every detection model over image, video, text, and audio. |
 | `bynn-face-search` | Face collections, enrollment, and 1:N search. |

@@ -1,6 +1,6 @@
 {
   "name": "bynn",
-  "description": "Official skills for Bynn, Agemin, and Detector24: identity verification, document fraud detection, age verification, and content detection.",
+  "description": "Official skills for Bynn, Agemin, and Detector24: document fraud detection for manipulated, fake and AI-generated PDF and image documents, plus identity verification, age verification, and content detection.",
   "version": "1.0.0",
   "owner": {
     "name": "Bynn Intelligence",
@@ -10,7 +10,7 @@
     {
       "name": "bynn",
       "source": "./plugins/bynn",
-      "description": "Use the Bynn platform from your agent: KYC sessions, the Web SDK, document fraud detection, age verification, content moderation, face search, AutoDoc invitations, and webhook verification. Bundles the Bynn MCP server.",
+      "description": "Document fraud detection for manipulated, fake and AI-generated PDF and image documents, plus identity verification and KYC sessions, age verification, content moderation, face search, AutoDoc invitations, and webhook verification. Bundles the Bynn MCP server.",
       "category": "verification",
       "author": {
         "name": "Bynn Intelligence",

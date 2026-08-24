@@ -1,9 +1,10 @@
 ---
 name: bynn
 description: >-
-  Start here for any Bynn task: identity verification (KYC) sessions, document fraud
-  detection, age verification, content moderation and AI-generated media detection,
-  face search, AutoDoc invitations, or webhook verification. Routes to the right
+  Start here for any Bynn task: document fraud detection for manipulated, fake and
+  AI-generated PDF and image documents, identity verification (KYC) sessions, age
+  verification, content moderation and AI-generated media detection, face search,
+  AutoDoc invitations, or webhook verification. Routes to the right
   Bynn skill and covers the authentication model, the API base, and error handling
   shared by all of them. Use it whenever the lane is unclear, and for any multi-step
   integration even when it is not.
