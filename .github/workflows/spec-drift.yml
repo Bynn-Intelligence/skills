@@ -1,0 +1,51 @@
+name: spec-drift
+
+# The checks in `validate` gate what a pull request changed and nothing else.
+# This job runs against the *live* Bynn surface, which is the only way to notice
+# that the API moved underneath the skills. It is deliberately separate and
+# non-blocking: upstream changing is real news, but it is not a reason to fail an
+# unrelated pull request.
+#
+# This exists because published integration docs have drifted before. agents.md
+# documents POST /v1/moderation/image when the route is /moderation/infer, and
+# the agemin SDK README points at /v1/agemin/result when the route is
+# /v1/agemin/check/reference/:reference_id. Nothing failed; customers just hit a
+# 404 first.
+
+on:
+  schedule:
+    - cron: "0 13 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check cited endpoints and models against the live surface
+        id: drift
+        continue-on-error: true
+        run: python3 hooks/check_drift.py 2>&1 | tee /tmp/drift.txt
+
+      - name: Open an issue when the surface has moved
+        if: steps.drift.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          title="Skills drifted from the live Bynn API"
+          existing=$(gh issue list --state open --search "$title in:title" --json number --jq '.[0].number // empty')
+          body=$'The weekly drift check found skills describing a surface that has moved.\n\n```\n'"$(cat /tmp/drift.txt)"$'\n```\n\nRun `python3 hooks/check_drift.py` locally to reproduce.'
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "$body"
+          else
+            gh issue create --title "$title" --body "$body"
+          fi

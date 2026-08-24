@@ -60,7 +60,7 @@ curl -X POST https://api.bynn.com/v1/moderation/infer_async \
     "image_url": "https://example.com/file.jpg",
     "idempotency_key": "scan-8123"
   }'
-# -> 202 { "token": "...", "status": "pending", ... }
+# -> 202 { "token": "...", "status": "pending"... }
 ```
 
 Then read the result at `GET /moderation/inference/{token}`. Collect the token, get on
@@ -127,8 +127,8 @@ Names as of writing. Confirm against `/moderation/models/all` before you depend 
 `destruction-fire-detection`, `graphic-language-detection`, `content-rating`,
 `ai-generated-image`, `ai-edited-image-forgery`, `effort-deepfake-image`,
 `document-tampering`, `document-liveness`, `document-classifier`, `vlm-ocr`,
-`vlm-violence-detection`, `age-detection`, `minor-detection`, `beauty-scoring`,
-`face-occlusion-detection`, `selfie-liveness`, `face-redaction`,
+`vlm-violence-detection`, `age-detection`, `minor-detection`,
+`face-occlusion-detection`, `face-redaction`,
 `face-redaction-minors`, `wanted-person-detection-image`.
 
 **Video.** `effort-deepfake-video`, `face-liveness`, `video-content-rating`,

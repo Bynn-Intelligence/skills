@@ -1,0 +1,53 @@
+name: validate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Validate marketplace and plugin manifests
+        run: python3 hooks/validate_manifests.py
+
+      - name: Validate skill front matter, links and house style
+        run: python3 hooks/check_skills.py
+
+      - name: Resolve every skill through the skills CLI
+        run: |
+          set -euo pipefail
+          npx --yes skills@latest add . --list > /tmp/list.txt 2>&1 || {
+            cat /tmp/list.txt; exit 1;
+          }
+          sed 's/\x1b\[[0-9;]*m//g' /tmp/list.txt > /tmp/plain.txt
+          expected=$(python3 -c "import json;print(sum(len(p['skills']) for p in json.load(open('.claude-plugin/marketplace.json'))['plugins']))")
+          grep -q "Found ${expected} skills" /tmp/plain.txt || {
+            echo "::error::CLI did not resolve all ${expected} skills"
+            cat /tmp/plain.txt
+            exit 1
+          }
+          echo "CLI resolved ${expected} skills"
+
+      - name: Confirm plugin grouping is active
+        run: |
+          set -euo pipefail
+          sed 's/\x1b\[[0-9;]*m//g' /tmp/list.txt > /tmp/plain.txt
+          # Grouping is what gives installers a per-product picker instead of one
+          # flat list. It breaks silently when a plugin source stops starting
+          # with "./", so assert the group headers are actually rendered.
+          missing=0
+          for group in Bynn Agemin Detector24; do
+            grep -qE "^\s*${group}\s*$" /tmp/plain.txt || { echo "::error::missing group header: ${group}"; missing=1; }
+          done
+          [ "$missing" -eq 0 ] || { cat /tmp/plain.txt; exit 1; }
+          echo "All plugin groups render"

@@ -94,7 +94,7 @@ curl -X POST https://api.bynn.com/v1/moderation/infer_async \
     "image_url": "https://example.com/file.jpg",
     "idempotency_key": "scan-8123"
   }'
-# -> 202 { "token": "...", "status": "pending", ... }
+# -> 202 { "token": "...", "status": "pending"... }
 ```
 
 Then read `GET /moderation/inference/{token}`. Collect tokens, do other work, come back.
@@ -160,9 +160,9 @@ Confirm names against the catalogue before depending on one.
 `vehicle-detection`, `people-counting`, `destruction-fire-detection`,
 `graphic-language-detection`, `content-rating`, `document-tampering`,
 `document-liveness`, `document-classifier`, `vlm-ocr`, `vlm-violence-detection`,
-`age-detection`, `minor-detection`, `face-occlusion-detection`, `selfie-liveness`,
-`face-redaction`, `face-redaction-minors`, `image-duplicate-detection`,
-`beauty-scoring`, `wanted-person-detection-image`.
+`age-detection`, `minor-detection`, `face-occlusion-detection`,
+`face-redaction`, `face-redaction-minors`,
+`wanted-person-detection-image`.
 
 **Video.** `effort-deepfake-video`, `face-liveness`, `video-content-rating`,
 `vlm-video-violence-detection`, `wanted-person-detection`,

@@ -16,13 +16,25 @@ Any agent:
 npx skills add Bynn-Intelligence/skills
 ```
 
-Pick a single product:
+The installer shows a picker grouped by product (Bynn, Agemin, Detector24), so you can
+toggle a whole product with one keypress on its group header. Press `a` to select
+everything. Nothing is pre-selected, which is the CLI's behaviour and not configurable
+per repository.
+
+To skip the picker entirely:
 
 ```bash
-npx skills add Bynn-Intelligence/skills --skill bynn
-npx skills add Bynn-Intelligence/skills --skill agemin
-npx skills add Bynn-Intelligence/skills --skill detector24
+# every skill, every detected agent, no prompts
+npx skills add Bynn-Intelligence/skills --all
+
+# every skill, but choose the agents yourself
+npx skills add Bynn-Intelligence/skills --skill '*'
+
+# just one product's skills
+npx skills add Bynn-Intelligence/skills --skill bynn --skill bynn-mcp --skill bynn-kyc-sessions
 ```
+
+Running inside a coding agent skips the picker on its own and installs everything.
 
 Claude Code, with the bundled MCP server:
 
