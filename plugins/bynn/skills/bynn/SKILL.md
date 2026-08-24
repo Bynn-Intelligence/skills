@@ -30,6 +30,19 @@ routing table, open the one skill you need, and do not load the rest.
 | Docs | `https://docs.bynn.com` |
 | Auth header | `Authorization: Bearer <token>` |
 
+## First run: connect before the first call
+
+Do not start a Bynn task and discover mid-way that nothing is set up. Check first.
+
+- **Using MCP?** In Claude Code, `/mcp` must show `bynn` as **Connected**. If it is absent,
+  run `claude mcp add --transport http bynn https://mcp.bynn.com` and sign in from `/mcp`.
+  Confirm with a `describe_api` call. Full setup, including other clients and bearer
+  tokens: `bynn-mcp`.
+- **Using REST?** Confirm you hold the right key family for the endpoints you need, per
+  the table below.
+
+If neither is available, help set one up rather than guessing at a partial fallback.
+
 ## Routing
 
 | Task | Skill |
@@ -51,16 +64,47 @@ the checks the other lanes expose individually.
 
 Bynn has two credential families. Pick by caller, not by convenience.
 
-**API keys**, from `https://dashboard.bynn.com`. Both are sent the same way:
-`Authorization: Bearer <key>`.
+**API keys**, from `https://dashboard.bynn.com`. The prefix tells you exactly what a key
+is, so you never have to guess from a variable name:
 
-- **Private key** for server to server calls. It can read results and submit media.
-  Never ship it to a browser, a mobile app, or any client you do not control.
-- **Public key** for client-facing flows. It can create a verification session and
-  little else, which is exactly why it is safe to expose in a web or mobile client.
+| Key | Use |
+|---|---|
+| `private_...` | Live, server to server. Reads results, submits media. |
+| `public_...` | Live, client-facing. Creates a verification session, little else. |
+| `private_sandbox_...` | Test mode, server side. |
+| `public_sandbox_...` | Test mode, client side. |
 
-Endpoints declare which one they accept. `POST /sessions` takes the public key.
-`POST /documents` and the result endpoints take the private key.
+- The **private** key must never reach a browser, a mobile app, or any client you do not
+  control. Anyone holding it can read every verification result you own.
+- The **public** key is designed to be visible. That is what makes it safe to ship in a web
+  or mobile client, and why `POST /sessions` accepts it.
+
+Send either as a Bearer token:
+
+```
+Authorization: Bearer private_...
+```
+
+HTTP Basic also works, with the key as the username and an empty password, which suits
+tooling that only speaks Basic:
+
+```bash
+curl -u "private_...:" https://api.bynn.com/v1/documents/<id>
+```
+
+Endpoints declare which family they accept. `POST /sessions` takes the public key.
+`POST /documents` and the result endpoints take the private key. A public key on a
+private-key endpoint returns 401.
+
+### Test mode and live mode
+
+There is **no mode switch and no separate base URL**. You select the environment by using
+the matching key, and the two are strictly isolated: a sandbox key cannot read a live
+record, and a live key cannot read a sandbox one. Requests made with a sandbox key never
+touch live networks and cost nothing.
+
+Keep both pairs in configuration and choose by environment, exactly as you would with any
+other payment-style API. Do not hardcode one and swap it at deploy time.
 
 **Dashboard access token**, from `https://dashboard.bynn.com/authenticate`. This is the
 token for agents and the MCP server. It acts with your own account's permissions, is

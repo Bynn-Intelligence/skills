@@ -101,6 +101,24 @@ when nothing else is prefilled.
 Everything except the key and level is optional, but more applicant data means better
 matching and fewer manual reviews.
 
+## Configuration reference
+
+| Option | Type | Required | Notes |
+|---|---|---|---|
+| `apiKey` | string | yes | Your **public** key |
+| `kycLevel` | string | yes | KYC level token |
+| `parentId` | string | yes | Id of the container element |
+| `fields` | Field[] | no | Form field configuration |
+| `i18n` | string | no | Language code, for example `en-US` |
+| `startTimeoutSeconds` | number | no | How long to wait for verification to start. Default 10. |
+| `onSession` | function | no | Session created |
+| `onStart` | function | no | Verification started |
+| `onComplete` | function | no | Flow completed |
+| `onSuccess` | function | no | Completed successfully |
+| `onReject` | function | no | Rejected |
+| `onError` | function | no | Technical error |
+| `onClose` | function | no | Modal closed |
+
 ## Customizing and events
 
 ```javascript
@@ -119,13 +137,64 @@ const bynn = Bynn({
       return;
     }
     console.log('Verification started:', response);
-  }
+  },
+  onStart:    ()  => showSpinner(),
+  onComplete: ()  => hideSpinner(),
+  onClose:    ()  => trackAbandonment()
 });
 ```
 
-`onSession` fires when the session is created, not when verification finishes. It is the
-right place to show a spinner or log an analytics event, and the wrong place to grant
-access.
+Use these for **UI only**. `onSession` fires when the session is created, `onStart` when
+the applicant begins, and `onComplete` when the flow ends. None of them is a verdict, and
+`onSuccess` here means the flow finished cleanly, not that the person passed. Show
+spinners and fire analytics from these; grant access from the webhook.
+
+`startTimeoutSeconds` bounds the wait for verification to start, defaulting to 10 seconds.
+Raise it on slow connections rather than treating the timeout as a hard failure.
+
+## Styling
+
+The SDK is themed with CSS custom properties. Override them on `:root`:
+
+```css
+:root {
+  --bynn-primary: #6366F1;
+  --bynn-primary-hover: #4F46E5;
+  --bynn-primary-disabled: #C7D2FE;
+  --bynn-primary-light: #EEF2FF;
+  --bynn-bg-white: #FFFFFF;
+  --bynn-bg-input: #F9FAFB;
+  --bynn-neutral-50: #F9FAFB;
+  --bynn-neutral-100: #F3F4F6;
+  --bynn-neutral-200: #E5E7EB;
+  --bynn-neutral-300: #D1D5DB;
+  --bynn-neutral-600: #4B5563;
+  --bynn-neutral-800: #1F2937;
+}
+```
+
+Element classes are namespaced behind `.data-bynn-sdk` so they do not collide with your
+own: `.bynn-form`, `.bynn-input-wrapper`, `.bynn-input`, `.bynn-submit`,
+`.bynn-description`, `.bynn-modal-overlay`, `.bynn-modal-container`, `.bynn-modal-content`.
+
+```css
+.data-bynn-sdk .bynn-submit {
+  background: var(--bynn-primary);
+  font-weight: 600;
+}
+```
+
+Prefer the custom properties over class overrides. Variables survive SDK updates; selector
+overrides are coupled to markup that can change.
+
+## Language
+
+```javascript
+const bynn = Bynn({ apiKey, kycLevel, parentId, i18n: 'en-US' });
+```
+
+Set it from the same source as the rest of your page's locale, so the verification step
+does not switch languages mid-flow.
 
 ## Where the outcome comes from
 

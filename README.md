@@ -78,11 +78,26 @@ Nothing here ships a credential. Each skill says which key it needs and where to
 | Agemin | `https://agemin.com/app` |
 | Detector24 | `https://detector24.ai/app` |
 
-For the bundled MCP server in Claude Code, export your token before starting the session:
+### Connect the MCP server
+
+Installing skills does not connect the Bynn MCP server: `npx skills add` copies skill files
+only. Connect it separately to get the 143 Bynn tools.
 
 ```bash
-export BYNN_API_TOKEN="<token from https://dashboard.bynn.com/authenticate>"
+claude mcp add --transport http bynn https://mcp.bynn.com
 ```
+
+Then run `/mcp` and sign in. The Claude Code plugin registers this URL for you, but it
+stays inert until that sign-in completes. For headless use, pass a token instead:
+
+```bash
+claude mcp add --transport http bynn https://mcp.bynn.com \
+  --header "Authorization: Bearer $BYNN_API_TOKEN"
+```
+
+The endpoint is the root path. Appending `/mcp` returns a 404. Other clients, including
+Claude Desktop, ChatGPT, Cursor, VS Code, Windsurf, and Zed, are covered in the
+`bynn-mcp` skill.
 
 ## Two rules worth reading before you build
 

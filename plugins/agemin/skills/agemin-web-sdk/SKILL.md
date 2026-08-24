@@ -105,6 +105,58 @@ you: do not write your own cookie on top of it.
 **The failure page must not call `validateSession()`.** A gated `/age-restricted` page
 redirects to itself forever.
 
+## verify() options
+
+```typescript
+agemin.verify({
+  mode?: 'modal' | 'redirect',        // default modal
+  theme?: 'light' | 'dark' | 'auto',
+  locale?: string,                    // 'auto' detects from the browser
+  metadata?: Record<string, any>,
+  onSuccess?, onAgePass?, onAgeFail?, onError?, onCancel?, onClose?
+});
+```
+
+`mode: 'redirect'` sends the visitor to the verification app and back, which is the option
+for embedded contexts where a modal is blocked or unusable. `theme: 'auto'` and
+`locale: 'auto'` follow the browser, so the gate matches the surrounding page without you
+detecting anything yourself.
+
+### VerificationResult
+
+```typescript
+interface VerificationResult {
+  referenceId: string;    // your reference, for backend lookup
+  sessionToken?: string;  // pass this to the status endpoint
+  completed: boolean;     // the process finished
+  timestamp: number;
+}
+```
+
+`completed: true` means the flow ended, not that the visitor passed. `sessionToken` is what
+your backend confirms with.
+
+## Progress and state events
+
+Separate from the verify callbacks, these drive your own UI during the scan:
+
+| Listener | Payload | Use |
+|---|---|---|
+| `onAppReady(cb)` | none | Verification app loaded. Hide your spinner, enable buttons. |
+| `onProgress(cb)` | `percentage`, `stage`, `message` | Drive a progress bar. `stage` is guidance like "Hold still" or "Move closer"; `message` is like "Capture 3/5". |
+| `onStateChange(cb)` | `from`, `to`, `data` | Track flow transitions. |
+| `onUserAction(cb)` | `type`, `target` | Analytics. `target` names the screen, for example `consent_page` or `face_scan_page`. |
+
+```javascript
+agemin.onProgress(({ percentage, stage }) => updateProgressBar(percentage, stage));
+```
+
+Surface `stage` to the visitor. A face scan that shows "Move closer" completes far more
+often than a bare spinner, and abandonment during capture is where age gates lose people.
+
+`onUserAction` is the honest way to find where your gate leaks: it tells you whether people
+drop at consent or at the scan, which are different problems with different fixes.
+
 ## Confirm server side
 
 The callbacks run in the visitor's browser, so they can be called by anyone. After
