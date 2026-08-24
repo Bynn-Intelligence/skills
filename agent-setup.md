@@ -37,6 +37,80 @@ Three plugins, fourteen skills, and the hosted Bynn MCP server.
 Each router skill (`bynn`, `agemin`, `detector24`) points at the others, so an agent only
 loads the lane a task needs. No API keys are installed or stored by any of this.
 
+***
+
+## Agemin is not Bynn: two products, two web SDKs
+
+The single most common integration mistake. Bynn and Agemin each ship a browser SDK, the
+package names are one word apart, and searching the Bynn docs for "the Agemin SDK" lands you
+on the wrong one. Pick by what the task needs, not by the name closest to hand.
+
+| | Bynn Web SDK | Agemin Web SDK |
+|---|---|---|
+| Package | `@bynn-intelligence/websdk` | `@bynn-intelligence/agemin-sdk` |
+| Import | `import { Bynn } from ...` | `import Agemin from ...` |
+| Answers | "Who is this person?" (identity, KYC, document) | "Is this person old enough?" (age only) |
+| Credentials | public key + KYC level | Asset ID (`ast_...`) + reference ID |
+| Entry call | `Bynn({...}).mount()` | `new Agemin({...}).verify()` / `.validateSession()` |
+| Docs | `https://docs.bynn.com` | `https://agemin.com/docs` |
+| Skill | `bynn-web-sdk` | `agemin-web-sdk` |
+
+If the request mentions age, an age gate, age verification, or "how old", it is Agemin, so
+work from the `agemin` skills and `@bynn-intelligence/agemin-sdk`. If it mentions KYC,
+identity, onboarding, or a document check, it is Bynn. When a request just says "the SDK"
+and the product is ambiguous, ask which one rather than guessing: the two are not
+interchangeable, and the wrong one cannot be made to do the other's job.
+
+***
+
+## Same capability, different products: route by the job
+
+Age, AI-generation, and moderation each exist in more than one Bynn product. The wrong lane
+still returns a plausible answer, so this is the kind of mistake that fails quietly. Route
+by the job, not by the first skill whose description happens to match.
+
+### "Is this person old enough?" lives in three places
+
+| Use | When | Skill |
+|---|---|---|
+| Agemin | A self-serve age gate on a site or app: the visitor scans their own face in the browser, the SDK runs the flow, your server confirms. | `agemin`, `agemin-web-sdk`, `agemin-api` |
+| Bynn age verification | You already hold a selfie, or want age as one step inside a Bynn identity flow, called server side. | `bynn-age-verification` |
+| Bynn moderation age model | Age or minor detection as one signal in a content pipeline that is already scoring other things. | `bynn-moderation` |
+
+Default to Agemin for an actual age gate. Reach for `bynn-age-verification` when the image
+is already in hand or age rides along with identity, and for the moderation model only when
+age is one of several signals in a trust-and-safety pass.
+
+### "Is this AI-generated or a deepfake?" lives in three places
+
+| Use | When | Skill |
+|---|---|---|
+| Detector24 | A general detection pipeline over image, video, audio, or text, picking models from a catalogue. | `detector24` |
+| Bynn moderation | The same detection as one call inside a Bynn trust-and-safety flow, sharing Bynn auth and webhooks. | `bynn-moderation` |
+| Bynn document fraud | The thing under test is a document (ID, passport, invoice, statement), not general media. | `bynn-document-fraud` |
+
+If it is a document, it is `bynn-document-fraud`. For general media, Detector24 and
+`bynn-moderation` run the same class of models: choose Detector24 for a standalone detection
+product with its own dashboard and catalogue, and `bynn-moderation` when the work already
+sits inside Bynn.
+
+### Detector24 vs Bynn moderation
+
+They overlap on purpose. Detector24 is the standalone detection product (`detector24.ai`,
+own dashboard and model catalogue). `bynn-moderation` is the same model family reached
+through the Bynn API, alongside identity and fraud. The detection is the same either way.
+Pick by which platform the rest of the integration lives on, not by the capability, and do
+not wire up both for one job.
+
+### KYC vs document fraud, inside Bynn
+
+Two lanes of one product, not competing products. `bynn-document-fraud` answers "is this one
+document genuine, altered, or machine-generated". `bynn-kyc-sessions` onboards and verifies
+a person end to end, and can run a document check as part of that. Use fraud detection for a
+document in isolation, KYC sessions for verifying a human. They compose.
+
+***
+
 Use the correct section for your agent below.
 
 ***
@@ -51,12 +125,20 @@ claude plugin marketplace add Bynn-Intelligence/skills
 claude plugin install bynn@bynn
 ```
 
-Add the other two plugins if the user works with those products:
+Then install the plugin for the product the user actually asked about, in the same setup
+pass. If the first thing they wanted is age verification or an age gate, install
+`agemin@bynn` now, do not defer it. If they wanted content or AI-generation detection,
+install `detector24@bynn`. When the work spans products, or you are unsure, install all
+three:
 
 ```
 claude plugin install agemin@bynn
 claude plugin install detector24@bynn
 ```
+
+A plugin the user's task needs but you did not install is a skill you will not have loaded
+when you start the work, which is exactly when it is too late to notice. "Set up Agemin" is
+a request to install `agemin@bynn`, not just `bynn`.
 
 Verify:
 
@@ -166,6 +248,19 @@ nothing and change nothing:
 
 If `describe_api` succeeds but `get_current_user` returns an authentication error, the
 server is reachable but the sign-in has not finished. Send the user back to `/mcp`.
+
+These two calls check the MCP server only. A reachable, authenticated MCP is **not** proof
+the skills installed: the MCP can already be connected from an earlier session, or bundled
+by another client, while the plugins are absent. Do not let a green `get_current_user` stand
+in for setup being complete. Confirm the skills separately:
+
+```
+claude plugin list | grep -A2 'bynn@bynn'
+```
+
+If the plugins are missing, the two verification calls still pass, and you nonetheless begin
+the first task with no skills loaded and guess from general knowledge, which is the exact
+failure this document exists to prevent.
 
 ***
 
