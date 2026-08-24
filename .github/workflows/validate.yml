@@ -38,6 +38,18 @@ jobs:
           }
           echo "CLI resolved ${expected} skills"
 
+      - name: Validate each plugin the way the review pipeline does
+        run: |
+          set -euo pipefail
+          npm install -g @anthropic-ai/claude-code >/dev/null 2>&1
+          # The community-marketplace review runs this same check on submission,
+          # with --strict so warnings fail rather than pass quietly.
+          claude plugin validate . --strict
+          for plugin in plugins/*/; do
+            echo "==> ${plugin}"
+            claude plugin validate "${plugin}" --strict
+          done
+
       - name: Confirm plugin grouping is active
         run: |
           set -euo pipefail
