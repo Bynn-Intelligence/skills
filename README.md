@@ -93,7 +93,7 @@ Nothing here ships a credential. Each skill says which key it needs and where to
 ### Connect the MCP server
 
 Installing skills does not connect the Bynn MCP server: `npx skills add` copies skill files
-only. Connect it separately to get the 143 Bynn tools.
+only. Connect it separately to get the Bynn tools.
 
 ```bash
 claude mcp add --transport http bynn https://mcp.bynn.com

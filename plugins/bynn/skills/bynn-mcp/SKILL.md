@@ -2,7 +2,7 @@
 name: bynn-mcp
 description: >-
   Connect an agent to the Bynn MCP server at https://mcp.bynn.com and drive Bynn
-  through its 143 tools instead of hand-written HTTP. Covers connecting with OAuth
+  through its tools instead of hand-written HTTP. Covers connecting with OAuth
   or a bearer token, per-client config for Claude Code, Claude Desktop, ChatGPT,
   Cursor, VS Code, Windsurf and Zed, which credential each tool group needs,
   verifying the connection, self-discovery, and when to drop to REST. Use when
@@ -18,7 +18,7 @@ license: MIT
 
 # Bynn over MCP
 
-The MCP server exposes the whole Bynn platform as 143 structured tools: identity
+The MCP server exposes the whole Bynn platform as structured tools: identity
 verification, document fraud detection, age verification, content moderation, face
 search, AutoDoc, fraud reasoning agents, and account management. Prefer it over
 hand-written HTTP for anything interactive, because it removes key handling and
@@ -121,8 +121,8 @@ repositories, or shared chats.
 
 ## Tool surface
 
-143 tools. Start with `describe_api`; it is authoritative and always current. The ones you
-will reach for most:
+Start with `describe_api`. It is authoritative and always current, which matters because
+the tool list grows. The ones you will reach for most:
 
 | Goal | Tools |
 |---|---|
@@ -134,10 +134,11 @@ will reach for most:
 | Face gallery | `create_face_collection`, `enroll_face`, `search_faces` |
 | Document requests over email or SMS | `create_invitation`, `get_invitation` |
 
-Groups: Documents (4), Age Verification (5), Content Moderation (12), Face Search (6),
-AutoDoc (37), Reasoning and Fraud Agents (25), Billing (14), Users and Account (7),
-Websites (8), Agemin Checks (3), Verification Sessions (16), API Keys (3), NFC (1),
-Server and Self-Discovery (2).
+Groups: Documents, Age Verification, Content Moderation, Face Search, AutoDoc,
+Reasoning and Fraud Agents, Billing, Users and Account, Websites, Agemin Checks,
+Verification Sessions, API Keys, NFC, and Server and Self-Discovery. For the live
+list and count, read the `file://server/status` resource rather than trusting a
+number written down here.
 
 Image inputs accept `file_path`, `image_url`, or `base64_image`. Prefer `image_url` when
 the file is already reachable and `base64_image` for something local and small. Files near

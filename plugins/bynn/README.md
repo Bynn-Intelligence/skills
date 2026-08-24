@@ -20,7 +20,7 @@ npx skills add Bynn-Intelligence/skills --skill bynn
 ## Connect the MCP server
 
 Installing skills does not connect the MCP server. Connect it separately to get Bynn's
-143 tools:
+tools:
 
 ```bash
 claude mcp add --transport http bynn https://mcp.bynn.com

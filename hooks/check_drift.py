@@ -221,30 +221,27 @@ for url in sorted(urls):
         problems.append(f"unreachable link {url}: {exc}  (in {', '.join(sorted(urls[url]))})")
 print(f"links checked: {len(urls)}, dead: {dead}")
 
-# ---------------------------------------------------------- pinned versions
-# The Web SDK is documented with a version-pinned CDN URL. When a new version
-# ships, that pin quietly becomes stale advice rather than a broken link.
-PINNED = {
-    "@bynn-intelligence/websdk": re.compile(r"static\.bynn\.com/sdk/js/([0-9]+\.[0-9]+\.[0-9]+)/"),
+# ------------------------------------------------------- no pinned versions
+# A version number written into a skill is stale the moment a release ships, and
+# nothing about it fails loudly: readers just install a superseded build. Skills
+# say where to look the current version up instead, so assert none creeps back in.
+PIN_PATTERNS = {
+    "Web SDK CDN path": re.compile(r"static\.bynn\.com/sdk/js/([0-9]+\.[0-9]+\.[0-9]+)/"),
+    "npm install with a pinned version": re.compile(r"npm install [^\n`]*@bynn-intelligence/[a-z-]+@([0-9]+\.[0-9]+\.[0-9]+)"),
+    "unpkg with a pinned version": re.compile(r"unpkg\.com/@bynn-intelligence/[a-z-]+@([0-9]+\.[0-9]+\.[0-9]+)"),
 }
-for package, pattern in PINNED.items():
-    pinned = set()
-    for path in glob.glob(os.path.join(ROOT, "plugins", "**", "*.md"), recursive=True):
-        pinned.update(pattern.findall(open(path, encoding="utf-8").read()))
-    if not pinned:
-        continue
-    try:
-        _, body = fetch(f"https://registry.npmjs.org/{package}/latest")
-        latest = json.loads(body).get("version")
-    except Exception as exc:  # noqa: BLE001
-        notes.append(f"could not read the latest {package} version ({exc})")
-        continue
-    for version in sorted(pinned):
-        if version != latest:
+pinned_found = 0
+for path in glob.glob(os.path.join(ROOT, "plugins", "**", "*.md"), recursive=True):
+    rel = os.path.relpath(path, ROOT)
+    text = open(path, encoding="utf-8").read()
+    for label, pattern in PIN_PATTERNS.items():
+        for version in pattern.findall(text):
+            pinned_found += 1
             problems.append(
-                f"{package} is pinned at {version} in the skills but npm latest is {latest}"
+                f"{rel} pins a version ({label}: {version}). Point readers at "
+                f"`npm view <package> version` or the dashboard instead."
             )
-    print(f"{package}: pinned {sorted(pinned)}, npm latest {latest}")
+print(f"pinned versions in skill content: {pinned_found} (expected 0)")
 
 # ------------------------------------------------------------------ report
 for n in notes:

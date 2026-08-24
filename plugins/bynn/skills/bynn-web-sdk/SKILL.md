@@ -21,21 +21,7 @@ parent element.
 
 ## Install
 
-Script tag:
-
-```html
-<script src="https://static.bynn.com/sdk/js/1.2.11/bynn.min.js"></script>
-```
-
-ES module:
-
-```html
-<script type="module">
-  import * as Bynn from 'https://static.bynn.com/sdk/js/1.2.11/bynn.esm.js';
-</script>
-```
-
-Package manager:
+Package manager, which is the path that stays current on its own:
 
 ```bash
 npm install @bynn-intelligence/websdk
@@ -45,7 +31,45 @@ npm install @bynn-intelligence/websdk
 import { Bynn } from '@bynn-intelligence/websdk';
 ```
 
-Pin the version you tested. Check the current one before you copy the URL above.
+Script tag, from a CDN that resolves to the latest published build:
+
+```html
+<script src="https://unpkg.com/@bynn-intelligence/websdk/dist/bynn.min.js"></script>
+```
+
+```html
+<script type="module">
+  import * as Bynn from 'https://unpkg.com/@bynn-intelligence/websdk/dist/bynn.esm.js';
+</script>
+```
+
+`https://cdn.jsdelivr.net/npm/@bynn-intelligence/websdk/dist/bynn.min.js` works the same
+way if you prefer jsDelivr.
+
+### Pinning a version
+
+Pinning is the right call for production, because an unversioned CDN URL means a third
+party can change your verification flow without a deploy on your side. Bynn serves
+version-pinned builds at:
+
+```
+https://static.bynn.com/sdk/js/<version>/bynn.min.js
+https://static.bynn.com/sdk/js/<version>/bynn.esm.js
+```
+
+**Look the current version up rather than copying one.** Any of these answers it:
+
+```bash
+npm view @bynn-intelligence/websdk version
+curl -s https://registry.npmjs.org/@bynn-intelligence/websdk/latest | jq -r .version
+```
+
+The dashboard also shows a ready-made snippet with the current version at
+`https://dashboard.bynn.com/integration`, under "Bynn.js (easy integration)".
+
+Then pin deliberately and upgrade on your own schedule. A version number written down in
+a guide is stale the moment a release ships, so treat any version you see quoted anywhere
+as an example, not as the current one.
 
 ## Mount
 
