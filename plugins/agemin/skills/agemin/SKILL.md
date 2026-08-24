@@ -9,7 +9,7 @@ description: >-
   gating, or "verify this visitor is old enough" comes up.
 metadata:
   author: bynn
-  version: "0.1.0"
+  version: "1.0.0"
 license: MIT
 ---
 

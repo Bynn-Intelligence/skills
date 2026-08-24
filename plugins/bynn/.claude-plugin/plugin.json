@@ -1,6 +1,6 @@
 {
   "name": "bynn",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Use the Bynn platform from your agent: KYC sessions, the Web SDK, document fraud detection, age verification, content moderation, face search, AutoDoc invitations, and webhook verification. Bundles the Bynn MCP server.",
   "license": "MIT",
   "author": {

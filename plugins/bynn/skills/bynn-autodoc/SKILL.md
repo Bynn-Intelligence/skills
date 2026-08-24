@@ -8,7 +8,7 @@ description: >-
   flow yourself, for onboarding, remediation, or document collection.
 metadata:
   author: bynn
-  version: "0.1.0"
+  version: "1.0.0"
 license: MIT
 ---
 

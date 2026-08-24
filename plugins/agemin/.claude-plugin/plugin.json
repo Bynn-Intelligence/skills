@@ -1,6 +1,6 @@
 {
   "name": "agemin",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Integrate Agemin biometric age verification: the browser SDK for age gating a site, and the server API for confirming results you can trust.",
   "license": "MIT",
   "author": {

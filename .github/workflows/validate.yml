@@ -20,6 +20,9 @@ jobs:
       - name: Validate marketplace and plugin manifests
         run: python3 hooks/validate_manifests.py
 
+      - name: Check every version agrees
+        run: python3 hooks/check_versions.py
+
       - name: Validate skill front matter, links and house style
         run: python3 hooks/check_skills.py
 

@@ -15,6 +15,7 @@ import json
 import os
 import re
 import sys
+import urllib.error
 import urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -168,6 +169,82 @@ try:
         print("mcp.bynn.com/health: 200")
 except Exception as exc:  # noqa: BLE001
     problems.append(f"MCP server unreachable at {MCP_HEALTH_URL}: {exc}")
+
+# ------------------------------------------------------------------- urls
+# Docs move and dashboards get reorganised. A skill that sends someone to a dead
+# settings page is wrong in a way no spec check notices.
+import glob
+
+SKIP_URL_HOSTS = ("example.com",)
+SKIP_URLS = {"https://mcp.bynn.com/mcp"}  # cited as the wrong URL, on purpose
+# An MCP endpoint answering 401 to an unauthenticated probe is the server working
+# correctly: it returns WWW-Authenticate pointing at its OAuth metadata. Only a
+# 5xx or a connection failure means something is actually wrong.
+AUTH_EXPECTED = ("https://mcp.bynn.com",)
+
+urls = {}
+for path in glob.glob(os.path.join(ROOT, "**", "*.md"), recursive=True):
+    if "node_modules" in path:
+        continue
+    rel = os.path.relpath(path, ROOT)
+    for m in re.finditer(r"https?://[A-Za-z0-9._~:/?#\[\]@!$&'()*+,;=%-]+", open(path, encoding="utf-8").read()):
+        u = m.group(0).rstrip(".,:;)\"'`>\\")
+        if u in SKIP_URLS or any(h in u for h in SKIP_URL_HOSTS):
+            continue
+        # API endpoints are covered by the spec check above and mostly need auth.
+        if u.startswith(("https://api.bynn.com/v1", "https://api.agemin.com/v1")):
+            continue
+        urls.setdefault(u, set()).add(rel)
+
+dead = 0
+for url in sorted(urls):
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "bynn-skills-drift"}, method="HEAD")
+        try:
+            with urllib.request.urlopen(req, timeout=20) as resp:
+                code = resp.status
+        except urllib.error.HTTPError as exc:
+            if exc.code in (403, 405, 501):  # HEAD refused; retry as GET
+                with urllib.request.urlopen(
+                    urllib.request.Request(url, headers={"User-Agent": "bynn-skills-drift"}), timeout=20
+                ) as resp:
+                    code = resp.status
+            else:
+                code = exc.code
+        if code in (401, 403) and url.rstrip("/") in [a.rstrip("/") for a in AUTH_EXPECTED]:
+            continue
+        if code >= 400:
+            dead += 1
+            problems.append(f"dead link {url} -> HTTP {code}  (in {', '.join(sorted(urls[url]))})")
+    except Exception as exc:  # noqa: BLE001
+        dead += 1
+        problems.append(f"unreachable link {url}: {exc}  (in {', '.join(sorted(urls[url]))})")
+print(f"links checked: {len(urls)}, dead: {dead}")
+
+# ---------------------------------------------------------- pinned versions
+# The Web SDK is documented with a version-pinned CDN URL. When a new version
+# ships, that pin quietly becomes stale advice rather than a broken link.
+PINNED = {
+    "@bynn-intelligence/websdk": re.compile(r"static\.bynn\.com/sdk/js/([0-9]+\.[0-9]+\.[0-9]+)/"),
+}
+for package, pattern in PINNED.items():
+    pinned = set()
+    for path in glob.glob(os.path.join(ROOT, "plugins", "**", "*.md"), recursive=True):
+        pinned.update(pattern.findall(open(path, encoding="utf-8").read()))
+    if not pinned:
+        continue
+    try:
+        _, body = fetch(f"https://registry.npmjs.org/{package}/latest")
+        latest = json.loads(body).get("version")
+    except Exception as exc:  # noqa: BLE001
+        notes.append(f"could not read the latest {package} version ({exc})")
+        continue
+    for version in sorted(pinned):
+        if version != latest:
+            problems.append(
+                f"{package} is pinned at {version} in the skills but npm latest is {latest}"
+            )
+    print(f"{package}: pinned {sorted(pinned)}, npm latest {latest}")
 
 # ------------------------------------------------------------------ report
 for n in notes:

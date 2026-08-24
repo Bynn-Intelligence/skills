@@ -1,6 +1,7 @@
 {
   "name": "bynn",
   "description": "Official skills for Bynn, Agemin, and Detector24: identity verification, document fraud detection, age verification, and content detection.",
+  "version": "1.0.0",
   "owner": {
     "name": "Bynn Intelligence",
     "url": "https://github.com/Bynn-Intelligence/skills"

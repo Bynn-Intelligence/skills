@@ -9,7 +9,7 @@ description: >-
   gates, minor detection, and any "is this person old enough" question.
 metadata:
   author: bynn
-  version: "0.1.0"
+  version: "1.0.0"
 license: MIT
 ---
 
