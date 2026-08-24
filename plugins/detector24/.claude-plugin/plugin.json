@@ -1,0 +1,23 @@
+{
+  "name": "detector24",
+  "version": "0.1.0",
+  "description": "Integrate Detector24 detection models for image, video, audio, and text: AI-generated media, deepfakes, nudity, violence, weapons, OCR, and more.",
+  "license": "MIT",
+  "author": {
+    "name": "Bynn Intelligence",
+    "url": "https://detector24.ai"
+  },
+  "homepage": "https://detector24.ai/docs",
+  "repository": "https://github.com/Bynn-Intelligence/skills",
+  "keywords": [
+    "detector24",
+    "content-moderation",
+    "ai-detection",
+    "deepfake",
+    "nsfw",
+    "trust-and-safety"
+  ],
+  "skills": [
+    "./skills/detector24"
+  ]
+}

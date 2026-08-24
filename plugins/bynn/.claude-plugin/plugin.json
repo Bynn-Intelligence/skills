@@ -1,0 +1,42 @@
+{
+  "name": "bynn",
+  "version": "0.1.0",
+  "description": "Use the Bynn platform from your agent: KYC sessions, the Web SDK, document fraud detection, age verification, content moderation, face search, AutoDoc invitations, and webhook verification. Bundles the Bynn MCP server.",
+  "license": "MIT",
+  "author": {
+    "name": "Bynn Intelligence",
+    "url": "https://www.bynn.com"
+  },
+  "homepage": "https://docs.bynn.com",
+  "repository": "https://github.com/Bynn-Intelligence/skills",
+  "keywords": [
+    "bynn",
+    "kyc",
+    "identity-verification",
+    "document-fraud",
+    "aml",
+    "deepfake",
+    "mcp"
+  ],
+  "mcpServers": {
+    "bynn": {
+      "type": "http",
+      "url": "https://mcp.bynn.com/",
+      "headers": {
+        "Authorization": "Bearer ${BYNN_API_TOKEN}"
+      }
+    }
+  },
+  "skills": [
+    "./skills/bynn",
+    "./skills/bynn-mcp",
+    "./skills/bynn-kyc-sessions",
+    "./skills/bynn-web-sdk",
+    "./skills/bynn-document-fraud",
+    "./skills/bynn-age-verification",
+    "./skills/bynn-moderation",
+    "./skills/bynn-face-search",
+    "./skills/bynn-autodoc",
+    "./skills/bynn-webhooks"
+  ]
+}

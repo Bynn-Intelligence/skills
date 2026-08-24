@@ -1,0 +1,60 @@
+{
+  "name": "bynn",
+  "description": "Official skills for Bynn, Agemin, and Detector24: identity verification, document fraud detection, age verification, and content detection.",
+  "owner": {
+    "name": "Bynn Intelligence",
+    "url": "https://github.com/Bynn-Intelligence/skills"
+  },
+  "metadata": {
+    "pluginRoot": "./plugins"
+  },
+  "plugins": [
+    {
+      "name": "bynn",
+      "source": "bynn",
+      "description": "Use the Bynn platform from your agent: KYC sessions, the Web SDK, document fraud detection, age verification, content moderation, face search, AutoDoc invitations, and webhook verification. Bundles the Bynn MCP server.",
+      "category": "verification",
+      "author": { "name": "Bynn Intelligence", "url": "https://www.bynn.com" },
+      "homepage": "https://docs.bynn.com",
+      "keywords": ["bynn", "kyc", "identity-verification", "document-fraud", "aml", "deepfake", "mcp"],
+      "skills": [
+        "./skills/bynn",
+        "./skills/bynn-mcp",
+        "./skills/bynn-kyc-sessions",
+        "./skills/bynn-web-sdk",
+        "./skills/bynn-document-fraud",
+        "./skills/bynn-age-verification",
+        "./skills/bynn-moderation",
+        "./skills/bynn-face-search",
+        "./skills/bynn-autodoc",
+        "./skills/bynn-webhooks"
+      ]
+    },
+    {
+      "name": "agemin",
+      "source": "agemin",
+      "description": "Integrate Agemin biometric age verification: the browser SDK for age gating a site, and the server API for confirming results you can trust.",
+      "category": "verification",
+      "author": { "name": "Bynn Intelligence", "url": "https://agemin.com" },
+      "homepage": "https://agemin.com/docs",
+      "keywords": ["agemin", "age-verification", "age-gate", "minor-detection", "compliance"],
+      "skills": [
+        "./skills/agemin",
+        "./skills/agemin-web-sdk",
+        "./skills/agemin-api"
+      ]
+    },
+    {
+      "name": "detector24",
+      "source": "detector24",
+      "description": "Integrate Detector24 detection models for image, video, audio, and text: AI-generated media, deepfakes, nudity, violence, weapons, OCR, and more.",
+      "category": "content-moderation",
+      "author": { "name": "Bynn Intelligence", "url": "https://detector24.ai" },
+      "homepage": "https://detector24.ai/docs",
+      "keywords": ["detector24", "content-moderation", "ai-detection", "deepfake", "nsfw", "trust-and-safety"],
+      "skills": [
+        "./skills/detector24"
+      ]
+    }
+  ]
+}
