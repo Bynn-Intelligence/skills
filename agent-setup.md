@@ -94,6 +94,10 @@ DecisionNode's official code lives under `github.com/Bynn-Intelligence` (`decisi
 and its API at `api.decisionnode.com`. The `decisionnode` package on npm and the
 `decisionnode` organization on GitHub belong to an unrelated project. Install the SDK the
 `decisionnode` skill names for the language, never a package found by searching the name.
+SDKs are published for Python (`bynn-decisionnode` on PyPI), Go, Java, .NET and PHP. The
+Node.js SDK, `@decisionnode/sdk`, is not on npm yet, so JavaScript and TypeScript code calls
+the API over HTTPS with `fetch` until it is; there is no `@decisionnode/cli`, as the
+command line is `dn`, installed as the `decisionnode` skill describes.
 
 ***
 
