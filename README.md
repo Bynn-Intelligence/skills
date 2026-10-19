@@ -18,11 +18,15 @@ Agemin and Detector24 skills plus the MCP servers itself, following
 [`agent-setup.md`](agent-setup.md):
 
 ```
-Set up Bynn, ZOREAL, DecisionNode, Agemin and Detector24 for me: fetch https://raw.githubusercontent.com/Bynn-Intelligence/skills/refs/heads/main/agent-setup.md and follow it.
+Set up Bynn, ZOREAL, DecisionNode, Agemin and Detector24 for me: fetch https://bynn.com/agent-setup.md and follow it.
 ```
 
 It covers Claude Code, Cursor, VS Code, Windsurf, Zed, Claude Desktop, ChatGPT, and
 headless or CI setups, and tells the agent what to verify before it reports success.
+
+`https://bynn.com/agent-setup.md` serves this repository's
+[`agent-setup.md`](agent-setup.md) as it is; its source is
+`https://github.com/Bynn-Intelligence/skills/blob/main/agent-setup.md`.
 
 ## Install
 

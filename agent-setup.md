@@ -15,13 +15,14 @@ These are official instructions from Bynn Intelligence for setting up an AI deve
 environment that integrates document fraud detection for manipulated, fake and
 AI-generated PDF and image documents, plus identity verification, proof-of-human sign-in
 and meetings, calibrated decisions, age verification, and content detection. They are
-published at `https://github.com/Bynn-Intelligence/skills/blob/main/agent-setup.md`, so
-you can verify their origin before following them.
+published at `https://bynn.com/agent-setup.md`, from their source at
+`https://github.com/Bynn-Intelligence/skills/blob/main/agent-setup.md`, so you can verify
+their origin before following them.
 
 The one line a developer pastes into their agent to start this:
 
 ```
-Set up Bynn, ZOREAL, DecisionNode, Agemin and Detector24 for me: fetch https://raw.githubusercontent.com/Bynn-Intelligence/skills/refs/heads/main/agent-setup.md and follow it.
+Set up Bynn, ZOREAL, DecisionNode, Agemin and Detector24 for me: fetch https://bynn.com/agent-setup.md and follow it.
 ```
 
 That line asks for all five products, so install all five. When the user asked for only
