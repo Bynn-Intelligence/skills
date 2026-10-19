@@ -1,6 +1,6 @@
 {
   "name": "bynn",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Document fraud detection for manipulated, fake and AI-generated PDF and image documents, plus identity verification and KYC sessions, age verification, content moderation, face search, AutoDoc invitations, and webhook verification. Bundles the Bynn MCP server.",
   "license": "MIT",
   "author": {

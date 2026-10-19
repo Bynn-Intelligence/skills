@@ -10,7 +10,7 @@ description: >-
   where a person proves who they are.
 metadata:
   author: bynn
-  version: "1.0.0"
+  version: "1.1.0"
 license: MIT
 ---
 

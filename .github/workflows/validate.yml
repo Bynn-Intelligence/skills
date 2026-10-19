@@ -61,7 +61,7 @@ jobs:
           # flat list. It breaks silently when a plugin source stops starting
           # with "./", so assert the group headers are actually rendered.
           missing=0
-          for group in Bynn Agemin Detector24; do
+          for group in Bynn Zoreal Agemin Detector24; do
             grep -qE "^\s*${group}\s*$" /tmp/plain.txt || { echo "::error::missing group header: ${group}"; missing=1; }
           done
           [ "$missing" -eq 0 ] || { cat /tmp/plain.txt; exit 1; }

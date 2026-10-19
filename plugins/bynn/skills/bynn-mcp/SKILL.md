@@ -12,7 +12,7 @@ allowed-tools: Bash(claude:*), Bash(npx:*), Bash(curl:*)
 compatibility: Linux, macOS, Windows
 metadata:
   author: bynn
-  version: "1.0.0"
+  version: "1.1.0"
 license: MIT
 ---
 

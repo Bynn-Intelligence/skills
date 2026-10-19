@@ -1,7 +1,7 @@
 {
   "name": "bynn",
-  "description": "Official skills for Bynn, Agemin, and Detector24: document fraud detection for manipulated, fake and AI-generated PDF and image documents, plus identity verification, age verification, and content detection.",
-  "version": "1.0.0",
+  "description": "Official skills for Bynn, ZOREAL, Agemin, and Detector24: document fraud detection for manipulated, fake and AI-generated PDF and image documents, plus identity verification, proof-of-human sign-in and meetings, age verification, and content detection.",
+  "version": "1.1.0",
   "owner": {
     "name": "Bynn Intelligence",
     "url": "https://github.com/Bynn-Intelligence/skills"
@@ -37,6 +37,31 @@
         "./skills/bynn-face-search",
         "./skills/bynn-autodoc",
         "./skills/bynn-webhooks"
+      ]
+    },
+    {
+      "name": "zoreal",
+      "source": "./plugins/zoreal",
+      "description": "Integrate ZOREAL: Login with ZOREAL (ZOREAL Identify) for sign-in that proves a verified, live human, the ZOREAL Meet meetings API, and the ZOREAL Book scheduling embed. Routes ZOREAL Verify work to the Bynn skills that run its checks.",
+      "category": "verification",
+      "author": {
+        "name": "Bynn Intelligence",
+        "url": "https://zoreal.com"
+      },
+      "homepage": "https://zoreal.com/documentation",
+      "keywords": [
+        "zoreal",
+        "proof-of-human",
+        "openid-connect",
+        "oauth2",
+        "sign-in",
+        "verified-meetings",
+        "scheduling"
+      ],
+      "skills": [
+        "./skills/zoreal",
+        "./skills/zoreal-identify",
+        "./skills/zoreal-meet"
       ]
     },
     {

@@ -1,21 +1,24 @@
 # Bynn Agent Skills
 
-Official [Agent Skills](https://agentskills.io) for **Bynn**, **Agemin**, and
+Official [Agent Skills](https://agentskills.io) for **Bynn**, **ZOREAL**, **Agemin**, and
 **Detector24**. They teach any coding agent how to integrate **document fraud detection** for
 manipulated, fake and AI-generated PDF and image documents, plus identity verification,
-age verification, and content detection, including the parts that are easy to get subtly
-and dangerously wrong.
+proof-of-human sign-in and meetings, age verification, and content detection, including the
+parts that are easy to get subtly and dangerously wrong. The onboarding below also installs
+the **DecisionNode** skill from its own repository,
+[`decision-node-skills`](https://github.com/Bynn-Intelligence/decision-node-skills).
 
 Works with Claude Code, Cursor, Codex, Copilot, Gemini CLI, OpenCode, Windsurf, Zed, and
 every other agent the `skills` CLI supports.
 
 ## Onboard an agent in one shot
 
-Point any coding agent at [`agent-setup.md`](agent-setup.md) and it will install the skills
-and wire up the MCP server itself:
+Paste this line into any coding agent and it installs the Bynn, ZOREAL, DecisionNode,
+Agemin and Detector24 skills plus the MCP servers itself, following
+[`agent-setup.md`](agent-setup.md):
 
 ```
-Follow https://github.com/Bynn-Intelligence/skills/blob/main/agent-setup.md
+Set up Bynn, ZOREAL, DecisionNode, Agemin and Detector24 for me: fetch https://raw.githubusercontent.com/Bynn-Intelligence/skills/refs/heads/main/agent-setup.md and follow it.
 ```
 
 It covers Claude Code, Cursor, VS Code, Windsurf, Zed, Claude Desktop, ChatGPT, and
@@ -29,7 +32,7 @@ Any agent:
 npx skills add Bynn-Intelligence/skills
 ```
 
-The installer shows a picker grouped by product (Bynn, Agemin, Detector24), so you can
+The installer shows a picker grouped by product (Bynn, ZOREAL, Agemin, Detector24), so you can
 toggle a whole product with one keypress on its group header. Press `a` to select
 everything. Nothing is pre-selected, which is the CLI's behaviour and not configurable
 per repository.
@@ -54,6 +57,14 @@ Claude Code, with the bundled MCP server:
 ```
 /plugin marketplace add Bynn-Intelligence/skills
 /plugin install bynn@bynn
+/plugin install zoreal@bynn
+```
+
+DecisionNode is installed from its own marketplace:
+
+```
+/plugin marketplace add Bynn-Intelligence/decision-node-skills
+/plugin install decisionnode@decisionnode
 ```
 
 ## What is in here
@@ -74,6 +85,19 @@ The identity platform. Start with the `bynn` skill: it routes to the rest.
 | `bynn-face-search` | Face collections, enrollment, and 1:N search. |
 | `bynn-autodoc` | Document requests sent over email or SMS. |
 | `bynn-webhooks` | Payloads, the event catalogue, and signature verification. |
+
+### `zoreal`
+
+ZOREAL, the trust layer that proves a real human is present behind a digital interaction.
+
+| Skill | Covers |
+|---|---|
+| `zoreal` | Router. What each ZOREAL product proves, and why ZOREAL Verify work goes through the Bynn skills. |
+| `zoreal-identify` | Login with ZOREAL: the client libraries, scopes, requiring a live human with `acr`, the assurance block. |
+| `zoreal-meet` | The ZOREAL Meet meetings API, host controls and the presence rule, and the ZOREAL Book embed. |
+
+ZOREAL Verify, which includes PDFChecker, runs its checks through the Bynn API today, so
+its integration lives in `bynn-document-fraud` and `bynn-kyc-sessions`.
 
 ### `agemin`
 
@@ -100,6 +124,8 @@ Nothing here ships a credential. Each skill says which key it needs and where to
 | Product | Get keys at |
 |---|---|
 | Bynn | `https://dashboard.bynn.com` (agent token at `/authenticate`) |
+| ZOREAL | `https://zoreal.com`: Assets for Login with ZOREAL, Settings, API keys for the Meet API |
+| DecisionNode | `https://decisionnode.com/console/keys` |
 | Agemin | `https://agemin.com/app` |
 | Detector24 | `https://detector24.ai/app` |
 
@@ -120,7 +146,14 @@ claude mcp add --transport http bynn https://mcp.bynn.com \
   --header "Authorization: Bearer $BYNN_API_TOKEN"
 ```
 
-The endpoint is the root path. Appending `/mcp` returns a 404. Other clients, including
+The endpoint is the root path. Appending `/mcp` returns a 404.
+
+The DecisionNode docs server needs no key or sign-in, and the `decisionnode` plugin
+registers it for you:
+
+```bash
+claude mcp add --transport http decisionnode-docs https://decisionnode.com/mcp
+``` Other clients, including
 Claude Desktop, ChatGPT, Cursor, VS Code, Windsurf, and Zed, are covered in the
 `bynn-mcp` skill.
 
@@ -138,6 +171,8 @@ Confirm every result server side before unlocking anything.
 
 - Agent onboarding: [`agent-setup.md`](agent-setup.md)
 - Bynn: `https://docs.bynn.com`, spec at `https://api.bynn.com/openapi.json`
+- ZOREAL: `https://zoreal.com/documentation`, sign-in provider at `https://id.zoreal.com/.well-known/openid-configuration`
+- DecisionNode: `https://decisionnode.com/docs`, docs MCP server at `https://decisionnode.com/mcp`
 - Agemin: `https://agemin.com/docs`
 - Detector24: `https://detector24.ai/docs`
 

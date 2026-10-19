@@ -10,7 +10,7 @@ description: >-
   integration even when it is not.
 metadata:
   author: bynn
-  version: "1.0.0"
+  version: "1.1.0"
 license: MIT
 ---
 
@@ -60,6 +60,17 @@ If neither is available, help set one up rather than guessing at a partial fallb
 If the task spans several lanes (for example "verify this applicant and screen their ID"),
 start with `bynn-kyc-sessions`: a session already runs document forensics, liveness, and
 the checks the other lanes expose individually.
+
+**ZOREAL Verify** (identity verification and document forensics, including PDFChecker)
+runs its checks through this API today, so a Verify integration uses
+`bynn-document-fraud` and `bynn-kyc-sessions`. Other jobs belong to sibling products:
+
+| Task | Go to |
+|---|---|
+| A sign-in that proves a verified, live human ("Continue with ZOREAL") | `zoreal-identify` (the `zoreal` plugin) |
+| Verified meetings, ZOREAL Book scheduling | `zoreal-meet` (the `zoreal` plugin) |
+| A self-serve age gate on a site | `agemin` (the `agemin` plugin) |
+| A narrow, calibrated decision in your own code: yes or no, pick one, score, count | `decisionnode` (installed from `Bynn-Intelligence/decision-node-skills`) |
 
 ## Authentication
 

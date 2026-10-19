@@ -10,7 +10,7 @@ description: >-
   document is genuine, altered, or machine-generated.
 metadata:
   author: bynn
-  version: "1.0.0"
+  version: "1.1.0"
 license: MIT
 ---
 

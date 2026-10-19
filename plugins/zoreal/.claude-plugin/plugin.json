@@ -1,0 +1,26 @@
+{
+  "name": "zoreal",
+  "version": "1.1.0",
+  "description": "Integrate ZOREAL: Login with ZOREAL (ZOREAL Identify) for sign-in that proves a verified, live human, the ZOREAL Meet meetings API, and the ZOREAL Book scheduling embed. Routes ZOREAL Verify work to the Bynn skills that run its checks.",
+  "license": "MIT",
+  "author": {
+    "name": "Bynn Intelligence",
+    "url": "https://zoreal.com"
+  },
+  "homepage": "https://zoreal.com/documentation",
+  "repository": "https://github.com/Bynn-Intelligence/skills",
+  "keywords": [
+    "zoreal",
+    "proof-of-human",
+    "openid-connect",
+    "oauth2",
+    "sign-in",
+    "verified-meetings",
+    "scheduling"
+  ],
+  "skills": [
+    "./skills/zoreal",
+    "./skills/zoreal-identify",
+    "./skills/zoreal-meet"
+  ]
+}

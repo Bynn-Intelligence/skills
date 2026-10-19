@@ -31,7 +31,9 @@ KNOWN_OFF_SPEC = {
 }
 # Paths under these prefixes belong to another product or host and are not
 # described by the Bynn spec.
-OFF_SPEC_PREFIXES = ("/agemin/",)
+# The ZOREAL Meet API is served from api.bynn.com but documented at
+# zoreal.com/documentation, not in the Bynn spec.
+OFF_SPEC_PREFIXES = ("/agemin/", "/zoreal/")
 OTHER_HOSTS = ("api.agemin.com", "mcp.bynn.com", "dashboard.bynn.com", "example.com")
 
 problems = []
@@ -175,12 +177,15 @@ except Exception as exc:  # noqa: BLE001
 # settings page is wrong in a way no spec check notices.
 import glob
 
-SKIP_URL_HOSTS = ("example.com",)
+SKIP_URL_HOSTS = ("example.com", "localhost")
 SKIP_URLS = {"https://mcp.bynn.com/mcp"}  # cited as the wrong URL, on purpose
 # An MCP endpoint answering 401 to an unauthenticated probe is the server working
 # correctly: it returns WWW-Authenticate pointing at its OAuth metadata. Only a
 # 5xx or a connection failure means something is actually wrong.
 AUTH_EXPECTED = ("https://mcp.bynn.com",)
+# Streamable HTTP endpoints with no auth answer only POST, so a HEAD or GET that
+# comes back 405 is the server working too.
+POST_ONLY = ("https://decisionnode.com/mcp",)
 
 urls = {}
 for path in glob.glob(os.path.join(ROOT, "**", "*.md"), recursive=True):
@@ -204,6 +209,8 @@ for url in sorted(urls):
             with urllib.request.urlopen(req, timeout=20) as resp:
                 code = resp.status
         except urllib.error.HTTPError as exc:
+            if exc.code == 405 and url.rstrip("/") in [p.rstrip("/") for p in POST_ONLY]:
+                continue
             if exc.code in (403, 405, 501):  # HEAD refused; retry as GET
                 with urllib.request.urlopen(
                     urllib.request.Request(url, headers={"User-Agent": "bynn-skills-drift"}), timeout=20
